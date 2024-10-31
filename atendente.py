@@ -15,49 +15,39 @@ class Atendente(Usuario):
         else:
             print("Credenciais de Atendente inválidas.")
 
+    
     def visualizar_fila(self):
-        """Permite ao atendente manipular a fila de espera."""
-        # Exemplo de uso dos métodos de FilaDeEspera
-        print("Fila de Espera Atual:")
-        for i, paciente in enumerate(self.fila_espera._fila, start=1):
-            print(f"{i}: {paciente}")
+        # Método para visualizar a fila de espera
+        return self.fila_espera
 
-    def inserir_paciente_na_fila(self, paciente):
-        """Insere um paciente no final da fila de espera."""
-        self.fila_espera.inserir_paciente(paciente)
-
-    def remover_paciente_da_fila(self):
-        """Remove o paciente no início da fila de espera."""
-        self.fila_espera.remover_paciente()
-
-    def posicao_paciente_na_fila(self, paciente):
-        """Retorna a posição de um paciente na fila de espera."""
-        return self.fila_espera.posicao(paciente)
-
-    def _acompanhar_Relatorio(self, relatorio):
-        """Método protegido para acompanhar o relatório de pacientes."""
-        print(f"Acompanhando o relatório: {relatorio.obter_detalhes()}")
+    def acompanhar_relatorio(self):
+        # Método para acompanhar o relatório (implementação pode variar)
+        pass
 
 
 # Importar a classe FilaDeEspera (assumindo que ela já foi implementada)
-fila_espera = FilaDeEspera()
+fila = FilaDeEspera()
 
 # Criar uma instância da Atendente com a fila de espera
-atendente = Atendente("Mariana", "mariana@hospital.com", "ID456", fila_espera)
+atendente = Atendente("Mariana", "mariana@hospital.com", "ID456", fila)
 
 # Login da Atendente
 atendente.login("mariana@hospital.com", "ID456")
 
-# Interações da Atendente com a fila de espera
-atendente.inserir_paciente_na_fila("Paciente A")
-atendente.inserir_paciente_na_fila("Paciente B")
-atendente.inserir_paciente_na_fila("Paciente C")
+# Inserindo pacientes na fila
+fila.inserir_paciente("Wanderson")
+fila.inserir_paciente("Gabriela")
+fila.inserir_paciente("João")
 
-# Verificar posição de um paciente específico
-atendente.verificar_posicao_paciente("Paciente B")
+# Verificando a posição de um paciente
+fila.posicao("Wanderson")
+fila.posicao("Gabriela") 
+fila.posicao("João") 
 
-# Remover o primeiro paciente da fila
-atendente.remover_paciente_da_fila()
+# Removendo um paciente do início da fila
+fila.remover_paciente()
 
-# Verificar novamente a posição dos pacientes após a remoção
-atendente.verificar_posicao_paciente("Paciente B")
+# Verificando a posição novamente após a remoção
+fila.posicao("Gabriela")  # Deve retornar 1 agora
+fila.posicao("Wanderson")  # Deve retornar -1, pois foi removido
+fila.posicao("João") 
