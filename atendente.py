@@ -1,6 +1,5 @@
 # Classe Atendente herda de Usuario
 from usuario import Usuario
-
 from fila_de_espera import FilaDeEspera
 
 class Atendente(Usuario):
@@ -15,49 +14,55 @@ class Atendente(Usuario):
         else:
             print("Credenciais de Atendente inválidas.")
 
-    def visualizar_fila(self):
-        """Permite ao atendente manipular a fila de espera."""
-        # Exemplo de uso dos métodos de FilaDeEspera
-        print("Fila de Espera Atual:")
-        for i, paciente in enumerate(self.fila_espera._fila, start=1):
-            print(f"{i}: {paciente}")
-
     def inserir_paciente_na_fila(self, paciente):
-        """Insere um paciente no final da fila de espera."""
-        self.fila_espera.inserir_paciente(paciente)
+        """Insere um paciente no final da fila de espera e atualiza o contador."""
+        self.fila_espera._fila.append(paciente)
+        self.fila_espera._num_pacientes += 1
+        print(f"Paciente {paciente} inserido na fila.")
 
     def remover_paciente_da_fila(self):
-        """Remove o paciente no início da fila de espera."""
-        self.fila_espera.remover_paciente()
+        """Remove o paciente no início da fila de espera e atualiza o contador."""
+        if self.fila_espera._fila:
+            paciente_removido = self.fila_espera._fila.pop(0)
+            self.fila_espera._num_pacientes -= 1
+            print(f"Paciente {paciente_removido} removido da fila.")
+        else:
+            print("A fila está vazia. Nenhum paciente para remover.")
 
-    def posicao_paciente_na_fila(self, paciente):
-        """Retorna a posição de um paciente na fila de espera."""
-        return self.fila_espera.posicao(paciente)
+    def visualizar_fila(self):
+        """Exibe todos os pacientes na fila de espera."""
+        if self.fila_espera._fila:
+            print("Fila de Espera Atual:")
+            for i, paciente in enumerate(self.fila_espera._fila, start=1):
+                print(f"{i}: {paciente}")
+        else:
+            print("A fila está vazia.")
 
-    def _acompanhar_Relatorio(self, relatorio):
-        """Método protegido para acompanhar o relatório de pacientes."""
-        print(f"Acompanhando o relatório: {relatorio.obter_detalhes()}")
+    def acompanhar_relatorio(self):
+        # Método para acompanhar o relatório (implementação pode variar)
+        pass
 
+# Exemplo de teste
+if __name__ == "__main__":
+    # Cria a fila de espera e a atendente
+    fila_espera = FilaDeEspera()
+    atendente = Atendente("Mariana", "mariana@hospital.com", "ID456", fila_espera)
 
-# Importar a classe FilaDeEspera (assumindo que ela já foi implementada)
-fila_espera = FilaDeEspera()
+    # Login da Atendente
+    atendente.login("mariana@hospital.com", "ID456")
 
-# Criar uma instância da Atendente com a fila de espera
-atendente = Atendente("Mariana", "mariana@hospital.com", "ID456", fila_espera)
+    # Inserir pacientes na fila
+    atendente.inserir_paciente_na_fila("Wanderson")
+    atendente.inserir_paciente_na_fila("Gabriela")
+    atendente.inserir_paciente_na_fila("João")
 
-# Login da Atendente
-atendente.login("mariana@hospital.com", "ID456")
+    # Visualizar fila após inserções
+    atendente.visualizar_fila()
 
-# Interações da Atendente com a fila de espera
-atendente.inserir_paciente_na_fila("Paciente A")
-atendente.inserir_paciente_na_fila("Paciente B")
-atendente.inserir_paciente_na_fila("Paciente C")
+    # Remover paciente da fila e visualizar novamente
+    atendente.remover_paciente_da_fila()
+    atendente.visualizar_fila()
 
-# Verificar posição de um paciente específico
-atendente.verificar_posicao_paciente("Paciente B")
-
-# Remover o primeiro paciente da fila
-atendente.remover_paciente_da_fila()
-
-# Verificar novamente a posição dos pacientes após a remoção
-atendente.verificar_posicao_paciente("Paciente B")
+    # Remover mais um paciente e visualizar a fila final
+    atendente.remover_paciente_da_fila()
+    atendente.visualizar_fila()
